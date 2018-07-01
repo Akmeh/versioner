@@ -1,0 +1,30 @@
+{
+  "name": "akmeh/versioning",
+  "description": "Version Manager in order to generate .version in every version and keep tracking on it",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Akmeh"
+    }
+  ],
+  "require": {
+    "symfony/console": "3.1.*",
+    "league/flysystem" : "1.0.28"
+  },
+  "require-dev": {
+    "codeception/codeception": "dev-master",
+    "mockery/mockery" : "0.9.5"
+  },
+  "bin": [
+        "src/version"
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "Versioning\\": "src/"
+    }
+  }
+}
+
+
+

@@ -1,0 +1,6 @@
+/vendor/
+/tests/_output/
+/tests/_support/
+/tests/_data
+/.idea
+
