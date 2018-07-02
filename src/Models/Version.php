@@ -12,4 +12,6 @@ class Version
         'minor' => 1,
         'patch' => 2,
     ];
+
+    const FLAG_USER = 'Rendy Eko Prastiyo';
 }
