@@ -5,6 +5,8 @@ namespace Versioning\Commits;
 
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 /**
  * Class Version
@@ -46,7 +48,7 @@ class Version
         try {
             $version = $this->filesystem->read(\Versioning\Models\Version::VERSION_FILE);
         } catch (FileNotFoundException $e) {
-            $version = \Versioning\Models\Version::FIRST_VERSION;
+            $version = $this->getFirstVersion();
             $this->filesystem->put(
                 \Versioning\Models\Version::VERSION_FILE, $version
             );
@@ -130,6 +132,24 @@ class Version
         }
 
         return implode('.', $explodeVersion);
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getFirstVersion() : string
+    {
+        $version = \Versioning\Models\Version::FIRST_VERSION;
+        $process = new Process('git describe --abbrev=0 --tags');
+        $process->run();
+
+        // executes after the command finishes
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+        $output = $process->getOutput();
+        return  $output === '' ? $version : $output;
     }
 
 

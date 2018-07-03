@@ -5,7 +5,6 @@ namespace Versioning\Commits;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Versioning\Models\Version;
 
 /**
  * Class Analyzer
@@ -84,7 +83,7 @@ class Analyzer
     }
 
     /**
-     * @param string $user
+     * @param string $commit
      * @return bool
      */
     private function isARelease(string $commit): bool
