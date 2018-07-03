@@ -8,9 +8,9 @@
     }
   ],
   "require": {
-    "symfony/console": "^3.4",
+    "symfony/console": "^3.3",
     "league/flysystem" : "^1.0",
-    "symfony/process" : "^3.4"
+    "symfony/process" : "^3.3"
   },
   "require-dev": {
     "codeception/codeception": "^2.4",
