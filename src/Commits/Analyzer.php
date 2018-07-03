@@ -44,7 +44,7 @@ class Analyzer
 
             $user = $this->getUser($commit);
 
-            if ($this->isTheFlaggedUser($user)) {
+            if ($this->isARelease($commit)) {
                 return $output;
             }
 
@@ -66,7 +66,7 @@ class Analyzer
      * @param $commit
      * @return string
      */
-    private function getMessage(string $commit) : string
+    private function getMessage(string $commit): string
     {
         preg_match_all("/\-\s(.*)\(/", $commit, $output);
 
@@ -77,7 +77,7 @@ class Analyzer
      * @param $commit
      * @return string
      */
-    private function getUser(string $commit) : string
+    private function getUser(string $commit): string
     {
         preg_match_all("/\<(.*)\>/", $commit, $output);
         return $output[1][0];
@@ -87,16 +87,17 @@ class Analyzer
      * @param string $user
      * @return bool
      */
-    private function isTheFlaggedUser(string $user) : bool
+    private function isARelease(string $commit): bool
     {
-        return $user === Version::FLAG_USER;
+
+        return strpos(trim($commit), '(tag:') === 0;
     }
 
     /**
      * @param string $message
      * @return bool
      */
-    private function isCommitValid(string $message) : bool
+    private function isCommitValid(string $message): bool
     {
         $message = trim($message);
 
