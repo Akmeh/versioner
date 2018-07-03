@@ -29,6 +29,6 @@ class VersionTest extends Test
         $versioner = new \Versioning\Commits\Version($filesystem);
         $newVersion = $versioner->calculateNew($commits);
 
-        $this->assertEquals('0.0.1', $newVersion);
+        $this->assertEquals('0.1.0', $newVersion);
     }
 }

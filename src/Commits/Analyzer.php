@@ -31,8 +31,6 @@ class Analyzer
         }
 
         return $this->analyze(explode("\n", $process->getOutput()));
-
-
     }
 
     /**
@@ -71,7 +69,8 @@ class Analyzer
     private function getMessage(string $commit) : string
     {
         preg_match_all("/\-\s(.*)\(/", $commit, $output);
-        return $output[1][0];
+
+        return trim(str_replace('(HEAD -> master, origin/master)', '', $output[1][0]));
     }
 
     /**

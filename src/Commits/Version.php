@@ -64,17 +64,21 @@ class Version
      */
     private function calculateNext(string $version, array $commits): string
     {
-        $explodeVersion = explode('.', $version);
-
+        $severity = 'patch';
         foreach ($commits as $commit) {
-            $severity = $this->severityChange($commit['message']);
+            $possibleSeverity = $this->severityChange($commit['message']);
+            if ($possibleSeverity !== 'patch') {
+                if ($possibleSeverity === 'major') {
+                    $severity = 'major';
+                    break;
+                } else {
+                    $severity = 'minor';
+                }
+            }
         }
 
-        ++$explodeVersion[\Versioning\Models\Version::SEVERITY[$severity]];
-
-        $newVersion = implode('.', $explodeVersion);
+        $newVersion = $this->calculateNewBaseOnSeverity($severity, $version);
         $this->filesystem->update(\Versioning\Models\Version::VERSION_FILE, $newVersion);
-
         return $newVersion;
     }
 
@@ -82,16 +86,52 @@ class Version
      * @param string $commit
      * @return string
      */
-    private function severityChange(string $commit) : string
+    private function severityChange(string $commit): string
     {
+        $severity = 'patch';
+
+        echo "\n" . $commit . "\n";
 
         foreach (\Versioning\Models\Version::COMMIT_STRUCTURE as $key => $chain) {
-            if (strpos(strtolower($commit), $chain) === 0) {
-                $severity = $key;
+
+            if (strpos(strtolower($commit), $key) === 0 && $chain !== 'patch') {
+                if ($chain === 'major') {
+                    return 'major';
+                } else {
+                    $severity = 'minor';
+                }
             }
         }
-        return $severity ?? 'patch';
+        return $severity;
+    }
+
+    /**
+     * @param string $severity
+     * @param string $version
+     * @return string
+     */
+    private function calculateNewBaseOnSeverity(string $severity, string $version): string
+    {
+        $explodeVersion = explode('.', $version);
+
+        $minor = \Versioning\Models\Version::SEVERITY['minor'];
+        $major = \Versioning\Models\Version::SEVERITY['major'];
+        $patch = \Versioning\Models\Version::SEVERITY['patch'];
+
+        if ($severity === 'major') {
+            ++$explodeVersion[$major];
+            $explodeVersion[$minor] = '0';
+            $explodeVersion[$patch] = '0';
+        } elseif ($severity === 'minor') {
+            ++$explodeVersion[$minor];
+            $explodeVersion[$patch] = '0';
+        } else {
+            ++$explodeVersion[$patch];
+        }
+
+        return implode('.', $explodeVersion);
     }
 
 
 }
+
