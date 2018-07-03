@@ -19,8 +19,10 @@
   "bin": [
         "src/version"
   ],
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "prefer-stable": true,
+  "bin": ["version"],
+
   "autoload": {
     "psr-4": {
       "Versioning\\": "src/"
