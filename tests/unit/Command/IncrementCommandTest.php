@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Versioning\Command\IncrementCommand;
+use Versioning\Command\CalculateVersionCommand;
 
 class IncrementCommandTest extends Codeception\TestCase\Test
 {
@@ -22,7 +22,7 @@ class IncrementCommandTest extends Codeception\TestCase\Test
         $filesystem->shouldReceive('write')
             ->andReturn(true);
 
-        $console = new IncrementCommand($filesystem);
+        $console = new CalculateVersionCommand($filesystem);
         $this->assertContains($expected, $console->execute($severity));
     }
 

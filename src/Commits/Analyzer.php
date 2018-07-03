@@ -28,7 +28,6 @@ class Analyzer
         if (!$process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
-
         return $this->analyze(explode("\n", $process->getOutput()));
     }
 
@@ -88,8 +87,7 @@ class Analyzer
      */
     private function isARelease(string $commit): bool
     {
-
-        return strpos(trim($commit), '(tag:') === 0;
+        return strpos(trim($commit), 'tag:') === false;
     }
 
     /**

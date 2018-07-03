@@ -20,7 +20,7 @@ class Version
     private $filesystem;
 
     /**
-     * IncrementCommand constructor.
+     * CalculateVersionCommand constructor.
      * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem)
@@ -91,8 +91,6 @@ class Version
     private function severityChange(string $commit): string
     {
         $severity = 'patch';
-
-        echo "\n" . $commit . "\n";
 
         foreach (\Versioning\Models\Version::COMMIT_STRUCTURE as $key => $chain) {
 

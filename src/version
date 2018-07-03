@@ -10,8 +10,7 @@ if (file_exists(__DIR__ . '/../../../autoload.php')) {
 }
 
 use Symfony\Component\Console\Application;
-use Versioning\Console\IncrementConsole;
-use Versioning\Console\InitializeConsole;
+use Versioning\Command\CalculateVersionCommand;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
@@ -20,6 +19,5 @@ $adapter = new Local('.');
 $filesystem = new Filesystem($adapter);
 
 $application = new Application();
-$application->add(new InitializeConsole($filesystem));
-$application->add(new IncrementConsole($filesystem));
+$application->add(new CalculateVersionCommand($filesystem));
 $application->run();

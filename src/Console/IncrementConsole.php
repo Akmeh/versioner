@@ -8,7 +8,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Versioning\Command\IncrementCommand;
+use Versioning\Command\CalculateVersionCommand;
 use League\Flysystem\Filesystem;
 
 /**
@@ -51,7 +51,7 @@ class IncrementConsole extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = new IncrementCommand($this->filesystem);
+        $command = new CalculateVersionCommand($this->filesystem);
         $response = $command->execute($input->getArgument('severity'));
         $output->writeln($response);
     }
