@@ -1,4 +1,23 @@
-#!/bin/bash
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
 
-php src/version version:generate
-cat .version
+// check for pdepend installed as composer package
+if (file_exists(__DIR__ . '/../../autoload.php')) {
+    include __DIR__ . '/../../autoload.php';
+} else {
+    include __DIR__ . '/vendor/autoload.php';
+}
+
+use Symfony\Component\Console\Application;
+use Versioning\Command\CalculateVersionCommand;
+
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+
+$adapter = new Local('.');
+$filesystem = new Filesystem($adapter);
+
+$application = new Application();
+$application->add(new CalculateVersionCommand($filesystem));
+$application->run();
